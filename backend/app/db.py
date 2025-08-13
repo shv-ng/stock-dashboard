@@ -1,6 +1,6 @@
+from functools import lru_cache
 import sqlite3
 from datetime import datetime, timedelta
-from typing import Any
 
 import pandas as pd
 import yfinance as yf
@@ -24,6 +24,7 @@ def init_db() -> None:
     conn.close()
 
 
+@lru_cache(maxsize=128)
 def get_stock(ticker: str):
     if ticker not in get_tickers():
         raise ValueError("invalid ticker")
