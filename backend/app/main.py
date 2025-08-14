@@ -4,6 +4,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app import db
+from app import predict
 
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
@@ -36,3 +37,13 @@ def get_stock(request: Request, response: Response, ticker: str):
     if ticker not in db.get_tickers():
         raise HTTPException(status_code=400, detail="invalid ticker")
     return db.get_stock(ticker)
+
+
+@app.get("/api/predict/{ticker}")
+@limiter.limit("10/minute")
+def predict_stocks(request: Request, response: Response, ticker: str):
+    try:
+        result = predict.predict(ticker)
+        return {"ticker": ticker, "predictions": result}
+    except Exception:
+        raise HTTPException(status_code=404, detail=f"No data for {ticker} in database")
