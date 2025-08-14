@@ -1,0 +1,130 @@
+import DOM from './dom.js';
+import Charts from './charts.js';
+
+class Dashboard {
+  constructor() {
+    this.items = [];
+
+    this.currentItem = null;
+    this.elements = {};
+    this.charts = Charts.charts;
+
+    this.init();
+  }
+
+  init() {
+    this.elements = DOM.cacheElements();
+    this.setupEventListeners();
+    DOM.renderNavigation(this.items, (index) => this.loadItem(index));
+    Charts.initCharts.call(this);
+
+    this.fetchTickers().then(() => {
+      this.prefetchAllTickers();
+    });
+    DOM.handleResponsive();
+
+  }
+
+  setupEventListeners() {
+    this.elements.hamburger.addEventListener('click', () => DOM.toggleSidebar());
+    this.elements.overlay.addEventListener('click', () => DOM.closeSidebar());
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') DOM.closeSidebar();
+    });
+    window.addEventListener('resize', () => DOM.handleResponsive());
+  }
+
+  loadItem(index) {
+    const item = this.items[index];
+    this.currentItem = item;
+
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    document.querySelectorAll('.nav-link')[index].classList.add('active');
+
+    this.elements.pageTitle.textContent = item.name;
+    this.elements.pageSubtitle.textContent = item.description;
+
+    if (!item.fetched) {
+      this.fetchTickerData(index);
+    } else {
+      Charts.updateCharts.call(this, item);
+      this.updateSummaries(item);
+    }
+  }
+
+  updateSummaries(item) {
+    this.elements.chart1Summary.innerHTML = `
+<strong>52-Week Low:</strong> ${item.min52.toFixed(4)} | 
+<strong>52-Week High:</strong> ${item.max52.toFixed(4)}
+`;
+
+    // Chart 2 summary placeholder
+    // const sum2 = item.chart2.reduce((a, b) => a + b, 0);
+    // const max2 = Math.max(...item.chart2);
+  }
+
+  // fetch list of all tickers
+  async fetchTickers() {
+    try {
+      const res = await fetch('http://localhost:8000/api/list');
+      const tickersData = await res.json();
+
+      this.items = Object.entries(tickersData).map(([symbol, info]) => ({
+        symbol,
+        name: info.company,
+        sector: info.sector,
+        chart1: [],
+        description: `${info.company} - ${info.sector} - ${symbol}`,
+        max52:0,
+        min52:0,
+        fetched: false 
+      }));
+
+      DOM.renderNavigation(this.items, this.loadItem.bind(this));
+    } catch (err) {
+      console.error('Failed to fetch tickers', err);
+    }
+  }
+  async fetchTickerData(index) {
+    const item = this.items[index];
+    if (item.fetched) return; 
+
+    try {
+      const res = await fetch(`http://localhost:8000/api/history/${item.symbol}`);
+      const data = await res.json();
+
+      // Extract chart1 data from API
+ item.chartData = {
+      dates: data.data.map(row => row.Date),
+      open: data.data.map(row => row.Open),
+      high: data.data.map(row => row.High),
+      low: data.data.map(row => row.Low),
+      close: data.data.map(row => row.Close),
+    };
+      item.fetched = true;
+      item.min52=data.min52;
+      item.max52=data.max52;
+
+      // If user is currently viewing this item, update charts immediately
+      if (this.currentItem === item) {
+        Charts.updateCharts.call(this, item);
+        this.updateSummaries(item);
+      }
+    } catch (err) {
+      console.error(`Failed to fetch data for ${item.symbol}`, err);
+    }
+  }
+  prefetchAllTickers() {
+    let delay = 0;
+    this.items.forEach((_, index) => {
+      setTimeout(() => {
+        this.fetchTickerData(index);
+      }, delay);
+      delay += 300; 
+    });
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new Dashboard();
+});

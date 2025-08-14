@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stock Market Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="dashboard">
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Stock Market Dashboard</h2>
+      </div>
+      <ul class="nav-list" id="navList"></ul>
+    </nav>
+
+    <main class="main-content">
+      <header class="header">
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
+        <div>
+          <h1 class="page-title" id="pageTitle">Select a company to view stock performance</h1>
+          <p class="page-subtitle" id="pageSubtitle">Click a company name in the sidebar to see its stock data</p>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="stats-grid" id="statsGrid">
+          <!-- Stats cards will be populated here -->
+        </div>
+
+        <div class="charts-container" id="chartsContainer">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3 class="chart-title" id="chart1Title">Last 1 Year Stock Price</h3>
+              <p class="chart-description">Daily closing prices over the past 52 weeks</p>
+            </div>
+            <div class="chart-container">
+              <canvas id="chart1"></canvas>
+            </div>
+            <div class="chart-summary" id="chart1Summary">
+              Select an item to view data
+            </div>
+          </div>
+
+          <!-- <div class="chart-card"> -->
+          <!--   <div class="chart-header"> -->
+          <!--     <h3 class="chart-title" id="chart2Title">Next 1 Month Price Prediction</h3> -->
+          <!--     <p class="chart-description">Forecasted daily prices for the upcoming month</p> -->
+          <!--   </div> -->
+          <!--   <div class="chart-container"> -->
+          <!--     <canvas id="chart2"></canvas> -->
+          <!--   </div> -->
+          <!--   <div class="chart-summary" id="chart2Summary"> -->
+          <!--     Select an item to view data -->
+          <!--   </div> -->
+          <!-- </div> -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>
