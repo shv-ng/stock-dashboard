@@ -1,6 +1,8 @@
 import DOM from './dom.js';
 import Charts from './charts.js';
 
+const API_URL="http://backend:8000"
+
 class Dashboard {
   constructor() {
     this.items = [];
@@ -71,7 +73,7 @@ class Dashboard {
   // fetch list of all tickers
   async fetchTickers() {
     try {
-      const res = await fetch('http://localhost:8000/api/list');
+      const res = await fetch(`${API_URL}/api/list`);
       const tickersData = await res.json();
 
       this.items = Object.entries(tickersData).map(([symbol, info]) => ({
@@ -96,7 +98,7 @@ class Dashboard {
     if (item.fetched) return; 
 
     try {
-      const res = await fetch(`http://localhost:8000/api/history/${item.symbol}`);
+      const res = await fetch(`${API_URL}/api/history/${item.symbol}`);
       const data = await res.json();
 
       // Extract chart1 data from API
@@ -121,7 +123,7 @@ class Dashboard {
     }
     // Fetch predictions
     try {
-      const predRes = await fetch(`http://localhost:8000/api/predict/${item.symbol}`);
+      const predRes = await fetch(`${API_URL}/api/predict/${item.symbol}`);
       const predData = await predRes.json();
       item.predictionData = {
         dates: predData.predictions.map(p => p.date),
