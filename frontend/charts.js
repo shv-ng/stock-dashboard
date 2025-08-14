@@ -40,10 +40,26 @@ export default {
       }
     });
 
-    // Chart 2 - commented out
-    /*
-    this.charts.chart2 = new Chart(document.getElementById('chart2'), {...});
-    */
+    // Chart 2 
+    this.charts.chart2 = new Chart(document.getElementById('chart2'), {
+      type: 'bar',
+      data: {
+        labels: [],
+      },
+      options: {
+        ...commonOptions,
+        plugins: {
+          ...commonOptions.plugins,
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            titleColor: 'white',
+            bodyColor: 'white',
+            borderColor: 'rgb(99, 102, 241)',
+            borderWidth: 0.1
+          }
+        }
+      }
+    });
   },
 
   updateCharts(item) {
@@ -74,5 +90,21 @@ export default {
       },
     ];
     this.charts.chart1.update('active');
+    if (item.predictionData) {
+      this.charts.chart2.data.labels = item.predictionData.dates;
+      this.charts.chart2.data.datasets = [
+        {
+          label: 'Predicted Price',
+          data: item.predictionData.prices,
+          borderColor: 'rgb(99, 102, 241)',
+          backgroundColor: 'rgba(99, 102, 241, 0.2)',
+          tension: 0.3,
+          fill: false,
+          pointRadius: 3,
+          pointHoverRadius: 5
+        }
+      ];
+      this.charts.chart2.update('active');
+    }
   }
 };

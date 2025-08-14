@@ -59,9 +59,13 @@ class Dashboard {
 <strong>52-Week High:</strong> ${item.max52.toFixed(4)}
 `;
 
-    // Chart 2 summary placeholder
-    // const sum2 = item.chart2.reduce((a, b) => a + b, 0);
-    // const max2 = Math.max(...item.chart2);
+    if (item.predictionData) {
+      const avgPred = item.predictionData.prices.reduce((a, b) => a + b, 0) / item.predictionData.prices.length;
+      this.elements.chart2Summary.innerHTML = `
+<strong>Predicted Avg:</strong> ${avgPred.toFixed(4)} | 
+<strong>Max Pred:</strong> ${Math.max(...item.predictionData.prices).toFixed(4)}
+`;
+    }
   }
 
   // fetch list of all tickers
@@ -114,6 +118,17 @@ class Dashboard {
       }
     } catch (err) {
       console.error(`Failed to fetch data for ${item.symbol}`, err);
+    }
+    // Fetch predictions
+    try {
+      const predRes = await fetch(`http://localhost:8000/api/predict/${item.symbol}`);
+      const predData = await predRes.json();
+      item.predictionData = {
+        dates: predData.predictions.map(p => p.date),
+        prices: predData.predictions.map(p => p.predicted_price)
+      };
+    } catch (err) {
+      console.error(`Failed to fetch prediction for ${item.symbol}`, err);
     }
   }
   // bg fetching all ticker data
