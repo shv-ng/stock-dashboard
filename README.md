@@ -2,6 +2,8 @@
 
 A comprehensive web application that displays real-time stock market data with predictive analytics capabilities. The dashboard provides historical stock prices for the last year and predicts future prices for the next 7 days using machine learning algorithms.
 
+[Screenshot](./screenshot/dashboard.png)
+
 ## 🌟 Features
 
 - **Real-time Stock Data**: Live stock prices fetched from Yahoo Finance
