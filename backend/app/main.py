@@ -25,14 +25,14 @@ db.init_db()
 
 # list out all the tickers company name and sector
 @app.get("/api/list")
-@limiter.limit("10/minute")
+@limiter.limit("60/minute")
 def get_companies(request: Request, response: Response):
     return db.get_tickers()
 
 
 # get stock of last 1y of given ticker
 @app.get("/api/history/{ticker}")
-@limiter.limit("150/minute")
+@limiter.limit("250/minute")
 def get_stock(request: Request, response: Response, ticker: str):
     if ticker not in db.get_tickers():
         raise HTTPException(status_code=400, detail="invalid ticker")
@@ -40,7 +40,7 @@ def get_stock(request: Request, response: Response, ticker: str):
 
 
 @app.get("/api/predict/{ticker}")
-@limiter.limit("10/minute")
+@limiter.limit("250/minute")
 def predict_stocks(request: Request, response: Response, ticker: str):
     try:
         result = predict.predict(ticker)
