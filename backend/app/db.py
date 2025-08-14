@@ -158,12 +158,7 @@ def get_tickers() -> dict[str, dict[str, str]]:
         "AMT": {"company": "American Tower Corp.", "sector": "Real Estate"},
         "PLD": {"company": "Prologis Inc.", "sector": "Real Estate"},
         "CCI": {"company": "Crown Castle Inc.", "sector": "Real Estate"},
-        # Materials
-        "LIN": {"company": "Linde PLC", "sector": "Materials"},
-        "APD": {"company": "Air Products and Chemicals Inc.", "sector": "Materials"},
-        "SHW": {"company": "Sherwin-Williams Co.", "sector": "Materials"},
         # Utilities
-        "NEE": {"company": "NextEra Energy Inc.", "sector": "Utilities"},
         "DUK": {"company": "Duke Energy Corp.", "sector": "Utilities"},
         "SO": {"company": "Southern Co.", "sector": "Utilities"},
         # Communication Services
