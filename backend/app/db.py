@@ -46,8 +46,8 @@ def get_stock(ticker: str):
             conn.close()
             return {
                 "data": stock_df.to_dict(orient="records"),
-                "52_week_high": high_52w,
-                "52_week_low": low_52w,
+                "max52": high_52w,
+                "min52": low_52w,
             }
 
     # Data stale or missing → download fresh
