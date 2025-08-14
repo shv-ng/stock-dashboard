@@ -34,6 +34,7 @@ class Dashboard {
     window.addEventListener('resize', () => DOM.handleResponsive());
   }
 
+  // fetch data of clicked item from cache or from backend and update chart
   loadItem(index) {
     const item = this.items[index];
     this.currentItem = item;
@@ -85,6 +86,7 @@ class Dashboard {
       console.error('Failed to fetch tickers', err);
     }
   }
+  // fetch ticker data from cache or from backend
   async fetchTickerData(index) {
     const item = this.items[index];
     if (item.fetched) return; 
@@ -94,13 +96,13 @@ class Dashboard {
       const data = await res.json();
 
       // Extract chart1 data from API
- item.chartData = {
-      dates: data.data.map(row => row.Date),
-      open: data.data.map(row => row.Open),
-      high: data.data.map(row => row.High),
-      low: data.data.map(row => row.Low),
-      close: data.data.map(row => row.Close),
-    };
+      item.chartData = {
+        dates: data.data.map(row => row.Date),
+        open: data.data.map(row => row.Open),
+        high: data.data.map(row => row.High),
+        low: data.data.map(row => row.Low),
+        close: data.data.map(row => row.Close),
+      };
       item.fetched = true;
       item.min52=data.min52;
       item.max52=data.max52;
@@ -114,6 +116,7 @@ class Dashboard {
       console.error(`Failed to fetch data for ${item.symbol}`, err);
     }
   }
+  // bg fetching all ticker data
   prefetchAllTickers() {
     let delay = 0;
     this.items.forEach((_, index) => {

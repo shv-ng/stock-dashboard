@@ -12,6 +12,7 @@ def get_conn() -> sqlite3.Connection:
     return sqlite3.connect(DB_PATH)
 
 
+# make migrations
 def init_db() -> None:
     conn = get_conn()
     _ = conn.execute("""
@@ -22,6 +23,9 @@ def init_db() -> None:
     """)
     conn.commit()
     conn.close()
+
+
+# fetch data from yfinance api or from db with lru caching
 
 
 @lru_cache(maxsize=128)
@@ -79,6 +83,7 @@ def get_stock(ticker: str):
     return get_stock(ticker)
 
 
+# hard coded ticker and respective info
 def get_tickers() -> dict[str, dict[str, str]]:
     return {
         # Technology

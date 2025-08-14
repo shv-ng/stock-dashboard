@@ -16,11 +16,13 @@ app.add_middleware(
 db.init_db()
 
 
+# list out all the tickers company name and sector
 @app.get("/api/list")
 def get_companies():
     return db.get_tickers()
 
 
+# get stock of last 1y of given ticker
 @app.get("/api/history/{ticker}")
 def get_stock(ticker: str):
     if ticker not in db.get_tickers():

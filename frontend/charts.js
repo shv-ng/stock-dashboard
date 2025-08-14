@@ -46,33 +46,33 @@ export default {
     */
   },
 
-updateCharts(item) {
-  const data = item.chartData;
-  this.charts.chart1.data.labels = data.dates;
-  this.charts.chart1.data.datasets = [
-    {
-      label: 'High',
-      data: data.high,
-      borderColor: 'rgb(16, 185, 129)',
-      backgroundColor: 'rgba(16, 185, 129, 0.2)',
-      tension: 0.3,
-      fill: '+1', // Fill to the next dataset (Low)
-      pointRadius: 0,
-      pointHoverRadius: 0,
-      order: 1
-    },
-    {
-      label: 'Low',
-      data: data.low,
-      borderColor: 'rgb(239, 68, 68)',
-      backgroundColor: 'rgba(239, 68, 68, 0.1)',
-      tension: 0.3,
-      fill: false,
-      pointRadius: 0,
-      pointHoverRadius: 0,
-      order: 2
-    },
-  ];
-  this.charts.chart1.update('active');
-}
+  updateCharts(item) {
+    const data = item.chartData;
+    this.charts.chart1.data.labels = data.dates;
+    this.charts.chart1.data.datasets = [
+      {
+        label: 'High',
+        data: data.high,
+        borderColor: 'rgb(16, 185, 129)',
+        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+        tension: 0.3,
+        fill: '+1', // Fill to the next dataset (Low)
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        order: 1
+      },
+      {
+        label: 'Low',
+        data: data.low,
+        borderColor: 'rgb(239, 68, 68)',
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        tension: 0.3,
+        fill: false,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+        order: 2
+      },
+    ];
+    this.charts.chart1.update('active');
+  }
 };
