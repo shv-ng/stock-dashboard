@@ -16,12 +16,12 @@ app.add_middleware(
 db.init_db()
 
 
-@app.get("/companies")
+@app.get("/api/list")
 def get_companies():
     return db.get_tickers()
 
 
-@app.get("/stock/{ticker}")
+@app.get("/api/history/{ticker}")
 def get_stock(ticker: str):
     if ticker not in db.get_tickers():
         raise HTTPException(status_code=400, detail="invalid ticker")
