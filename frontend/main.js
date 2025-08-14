@@ -1,7 +1,9 @@
 import DOM from './dom.js';
 import Charts from './charts.js';
 
-const API_URL="http://backend:8000"
+// for docker:
+// const API_URL = "http://backend:8000"
+const API_URL="https://stock-dashboard-wrci.onrender.com"
 
 class Dashboard {
   constructor() {
