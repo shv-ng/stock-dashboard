@@ -35,26 +35,6 @@ A comprehensive web application that displays real-time stock market data with p
 - **Docker**: Containerization
 - **Docker Compose**: Multi-container orchestration
 
-## 🏗️ Architecture
-
-### Frontend Flow
-1. User opens the application
-2. Company list is fetched and displayed
-3. Stock data for each company is pre-loaded and cached in memory
-4. When user selects a company, data is served from cache or API call is made
-
-### Backend Flow
-1. API request received for company data
-2. Check LRU cache (max size: 128) first
-3. If not in cache, check disk storage (updated daily)
-4. If data is stale, fetch from Yahoo Finance API
-5. Store in disk and cache, then return response
-
-### Prediction System
-- Uses historical data stored on disk
-- Applies linear regression algorithm
-- Generates 7-day price predictions
-- Results cached in both LRU cache and disk storage
 
 ## 📦 Installation & Setup
 
@@ -181,28 +161,26 @@ GET /api/predict/{ticker}
 }
 ```
 
-## 💡 Development Approach
+## 🏗️ Architecture
 
-This project follows a pragmatic approach to building a full-stack financial application. The architecture emphasizes performance through intelligent caching strategies and data persistence. The backend implements a three-tier caching system: in-memory LRU cache for frequently accessed data, disk storage for persistent daily updates, and live API calls as a fallback.
+### Frontend Flow
+1. User opens the application
+2. Company list is fetched and displayed
+3. Stock data for each company is pre-loaded and cached in memory
+4. When user selects a company, data is served from cache or API call is made
 
-The frontend prioritizes user experience with preemptive data loading and smooth interactions. By caching company data in browser memory, the application provides instant responses to user selections while maintaining data freshness through strategic API calls.
+### Backend Flow
+1. API request received for company data
+2. Check LRU cache (max size: 128) first
+3. If not in cache, check disk storage (updated daily)
+4. If data is stale, fetch from Yahoo Finance API
+5. Store in disk and cache, then return response
 
-The prediction system uses linear regression on historical data, providing users with insights into potential future price movements. While simple, this approach offers transparency and reasonable accuracy for short-term predictions.
-
-## 🔧 Technologies Used
-
-The technology stack was chosen for optimal performance and developer experience. FastAPI provides high-performance API capabilities with automatic documentation generation. The vanilla JavaScript frontend keeps the bundle size minimal while Chart.js handles complex data visualizations elegantly.
-
-Docker containerization ensures consistent deployment across different environments, while the SQLite database provides reliable local storage without complex setup requirements. The yfinance library offers robust access to real-time market data from Yahoo Finance.
-
-## 🚧 Challenges Faced
-
-The main technical challenges involved optimizing data flow and caching strategies. Implementing an efficient multi-layer cache required careful consideration of data freshness vs. performance trade-offs.
-
-Frontend chart integration presented initial difficulties with data formatting and real-time updates, which were resolved through careful state management and Chart.js configuration.
-
-Docker deployment required switching from Python 3.11 to Python 3.10 due to compatibility issues with some dependencies, highlighting the importance of tested deployment environments.
-
+### Prediction System
+- Uses historical data stored on disk
+- Applies linear regression algorithm
+- Generates 7-day price predictions
+- Results cached in both LRU cache and disk storage
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
