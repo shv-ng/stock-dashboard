@@ -41,7 +41,7 @@ A comprehensive web application that displays real-time stock market data with p
 ### Using Docker (Recommended)
 
 ```bash
-git clone https://github.com/ShivangSrivastava/stock-dashboard
+git clone https://github.com/shv-ng/stock-dashboard
 cd stock-dashboard
 
 # Edit frontend/main.js and update the API URL
@@ -56,7 +56,7 @@ The application will be available at `http://localhost:80`
 ### Manual Setup
 
 ```bash
-git clone https://github.com/ShivangSrivastava/stock-dashboard
+git clone https://github.com/shv-ng/stock-dashboard
 cd stock-dashboard
 
 # Edit frontend/main.js and update the API URL
